@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>M Video AI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo"><span>M</span> Video AI</div>
+  <button class="ghost">My Projects</button>
+</header>
+<main>
+<section class="hero">
+  <p class="badge">AI VIDEO GENERATOR</p>
+  <h1>Turn your idea into a video.</h1>
+  <p class="sub">Describe your scene and M Video AI will generate it for you.</p>
+  <div class="card">
+    <label for="prompt">What do you want to create?</label>
+    <textarea id="prompt" placeholder="Example: A cinematic shot of a mysterious room at night..."></textarea>
+    <div class="options">
+      <div>
+        <label for="ratio">Aspect ratio</label>
+        <select id="ratio">
+          <option>9:16 — Shorts/Reels</option>
+          <option>16:9 — YouTube</option>
+          <option>1:1 — Square</option>
+        </select>
+      </div>
+      <div>
+        <label for="duration">Video duration</label>
+        <select id="duration">
+          <option value="2">2 minutes</option>
+          <option value="5">5 minutes</option>
+          <option value="10">10 minutes</option>
+          <option value="15">15 minutes</option>
+        </select>
+      </div>
+    </div>
+    <button id="generate" class="generate">Generate Video</button>
+    <p id="status" class="status"></p>
+  </div>
+  <div class="preview" id="preview">
+    <div class="play">▶</div>
+    <p>Your generated video will appear here</p>
+  </div>
+</section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
