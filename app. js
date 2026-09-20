@@ -1,0 +1,23 @@
+const btn = document.getElementById('generate');
+const promptBox = document.getElementById('prompt');
+const status = document.getElementById('status');
+const preview = document.getElementById('preview');
+
+btn.addEventListener('click', () => {
+    const prompt = promptBox.value.trim();
+    const duration = document.getElementById('duration').value;
+
+    if (!prompt) {
+        status.textContent = 'Pehle apna video idea likho.';
+        return;
+    }
+
+    status.textContent = `${duration}-minute video request received.`;
+
+    preview.innerHTML = `
+        <div>
+            <div class="play">✓</div>
+            <p>Generation engine will be connected next.</p>
+        </div>
+    `;
+});
