@@ -1,23 +1,48 @@
-const btn = document.getElementById('generate');
-const promptBox = document.getElementById('prompt');
-const status = document.getElementById('status');
-const preview = document.getElementById('preview');
+const btn = document.getElementById("generate");
+const promptBox = document.getElementById("prompt");
+const status = document.getElementById("status");
+const preview = document.getElementById("preview");
 
-btn.addEventListener('click', () => {
-    const prompt = promptBox.value.trim();
-    const duration = document.getElementById('duration').value;
+btn.addEventListener("click", async () => {
+  const prompt = promptBox.value.trim();
+  const duration = document.getElementById("duration").value;
 
-    if (!prompt) {
-        status.textContent = 'Pehle apna video idea likho.';
-        return;
+  if (!prompt) {
+    status.textContent = "Pehle apna video idea likho.";
+    return;
+  }
+
+  status.textContent = "Request server par bheji ja rahi hai...";
+  preview.innerHTML = "";
+
+  try {
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        prompt: prompt,
+        duration: duration
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Server error");
     }
 
-    status.textContent = `${duration}-minute video request received.`;
+    status.textContent = "Backend connected ✅";
 
     preview.innerHTML = `
-        <div>
-            <div class="play">✓</div>
-            <p>Generation engine will be connected next.</p>
-        </div>
+      <div>
+        <div class="play">✓</div>
+        <p>${data.message}</p>
+        <small>Prompt: ${data.prompt}</small>
+      </div>
     `;
+  } catch (error) {
+    status.textContent = "Error: " + error.message;
+  }
 });
