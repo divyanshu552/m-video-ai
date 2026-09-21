@@ -1,48 +1,57 @@
-const btn = document.getElementById("generate");
-const promptBox = document.getElementById("prompt");
-const status = document.getElementById("status");
-const preview = document.getElementById("preview");
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("generate");
+  const promptBox = document.getElementById("prompt");
+  const status = document.getElementById("status");
+  const preview = document.getElementById("preview");
 
-btn.addEventListener("click", async () => {
-  const prompt = promptBox.value.trim();
-  const duration = document.getElementById("duration").value;
-
-  if (!prompt) {
-    status.textContent = "Pehle apna video idea likho.";
+  if (!btn || !promptBox || !status || !preview) {
+    console.error("Required HTML element not found");
     return;
   }
 
-  status.textContent = "Request server par bheji ja rahi hai...";
-  preview.innerHTML = "";
+  btn.addEventListener("click", async () => {
+    const prompt = promptBox.value.trim();
+    const durationElement = document.getElementById("duration");
+    const duration = durationElement ? durationElement.value : "2";
 
-  try {
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        duration: duration
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Server error");
+    if (!prompt) {
+      status.textContent = "Pehle apna video idea likho.";
+      return;
     }
 
-    status.textContent = "Backend connected ✅";
+    status.textContent = "Request server par bheji ja rahi hai...";
+    preview.innerHTML = "";
 
-    preview.innerHTML = `
-      <div>
-        <div class="play">✓</div>
-        <p>${data.message}</p>
-        <small>Prompt: ${data.prompt}</small>
-      </div>
-    `;
-  } catch (error) {
-    status.textContent = "Error: " + error.message;
-  }
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          duration: duration
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Server error");
+      }
+
+      status.textContent = "Backend connected ✅";
+
+      preview.innerHTML = `
+        <div>
+          <div class="play">✓</div>
+          <p>${data.message}</p>
+          <small>Prompt: ${data.prompt}</small>
+        </div>
+      `;
+    } catch (error) {
+      console.error(error);
+      status.textContent = "Error: " + error.message;
+    }
+  });
 });
